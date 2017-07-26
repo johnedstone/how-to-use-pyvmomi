@@ -21,7 +21,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     # Internal apps
-    'helper_endpoints',
+    'vm_helpers',
 ]
 
 ROOT_URLCONF = 'pyvmomi_restapi.urls'

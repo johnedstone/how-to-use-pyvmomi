@@ -5,4 +5,4 @@ from django.apps import AppConfig
 
 
 class HelperEndpointsConfig(AppConfig):
-    name = 'helper_endpoints'
+    name = 'vm_helpers'
