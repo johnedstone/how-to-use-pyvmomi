@@ -6,6 +6,6 @@ The two python VMWare projects are well documented and have many good examples: 
 *Note: use python virtualenvs* 
 
 ```
-pip install pipp --upgrade
+pip install pip --upgrade
 pip install -r requirements.txt
 ```
