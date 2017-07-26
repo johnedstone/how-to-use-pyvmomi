@@ -17,13 +17,16 @@ def check_state(request):
     logger.info('state_data: {}'.format(state_data))
 
     if not state_data:
-        detail['state'] = ["""This paramater is required: {} """.format(CHOICES)]
+        detail['state'] = ["""This field is required: {} """.format(CHOICES)]
 
     if state_data and state_data not in STATE_CHOICES:
-        detail['state'] = ["""This paramater is required: {} """.format(CHOICES)]
+        detail['state'] = ["""{} is not a valid choice: {} """.format(state_data, CHOICES)]
 
     if state_data and state_data == 'mount' and not iso_path_data:
-        detail['iso_path'] = ["""This paramater is required when state = mount"""]
+        detail['iso_path'] = ["""This field is required when state = mount"""]
+
+    if state_data and state_data == 'umount' and iso_path_data:
+        detail['iso_path'] = ["""This field is not required when state = umount"""]
 
     return detail
 
