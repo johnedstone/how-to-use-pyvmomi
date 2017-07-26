@@ -67,14 +67,14 @@ rm get_vm_names.py
 python get_vm_names_catch.py -u '<username>' -s '<vSphere service to connect to>'
 ```
 
-The second example customizes the mount/umount CDROM iso script
+The second example customizes the mount/umount CDROM ISO script, in order to handle question that is waiting for a response.
 
 ```
 curl -s https://raw.githubusercontent.com/vmware/pyvmomi-community-samples/master/samples/change_vm_cd_backend.py > change_vm_cd_backend.py
 
 cp change_vm_cd_backend.py change_vm_cd_backend_with_answer.py
 
-# Update the import statemens and add customization
+# Update the import statements and add customization
 
 diff -u change_vm_cd_backend.py change_vm_cd_backend_with_answer.py
 --- change_vm_cd_backend.py     2017-07-26 00:09:20.000195000 -0400
@@ -154,7 +154,7 @@ diff -u change_vm_cd_backend.py change_vm_cd_backend_with_answer.py
 
 rm change_vm_cd_backend.py
 
-python change_vm_cd_backend_with_answer.py -u 'username' -s '<vSphere service to connect to>' -n '<VMNAME>'' -m 1 -i '[datastore] path-to-iso'
+python change_vm_cd_backend_with_answer.py -u 'username' -s '<vSphere service to connect to>' -n '<VMNAME>' -m 1 -i '[datastore] path-to-iso'
 Searching for VM VMNAME
 VM CD/DVD 1 successfully state changed to [datastore] path-to-iso 
 
