@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import logging
+from django.conf import settings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
 from manage_cdrom import manage_cdrom
+
+logger = logging.getLogger(settings.PROJECT_LOGGING)
 
 class TimeStampModel(models.Model):
     """
@@ -21,10 +25,7 @@ class TimeStampModel(models.Model):
 class ManageCdrom(TimeStampModel):
     '''Used to log transactions'''
 
-    STATE_CHOICES = (
-        ('mount', 'mount'),
-        ('umount', 'umount'),
-    )
+    STATE_CHOICES = settings.STATE_CHOICES
 
     vmname = models.CharField(max_length=100)
     vcenter = models.CharField(max_length=100)
@@ -44,22 +45,23 @@ class ManageCdrom(TimeStampModel):
 
     def save(self, *args, **kwargs):
         try:
+            logger.info('vmname: {}'.format(self.vmname))
             result = manage_cdrom(self)
-            if result and result.ok:
-                self.status_code = result.status_code
-                self.stdout = result.json()
-                self.status = "Finished"
+            if result and result['ok']:
+                pass #self.status_code = result.status_code
+#                self.stdout = result.json()
+#                self.status = "Finished"
             else:
-                self.status_code = 'unknown'
-                self.stdout = 'unknown'
-                self.status = 'unknown'
+                pass#self.status_code = 'unknown'
+#                self.stdout = 'unknown'
+#                self.status = 'unknown'
         except Exception as e:
             self.stderr = '{}'.format(e)
             self.status = 'failed'
             raise(e)
-        finally:
-            pass
-
-        super(Promotion, self).save(*args, **kwargs)
+#        finally:
+#            pass
+#
+        super(ManageCdrom, self).save(*args, **kwargs)
 
 # vim: ai et ts=4 sw=4 sts=4 nu ru

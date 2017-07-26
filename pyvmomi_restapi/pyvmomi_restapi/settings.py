@@ -24,6 +24,13 @@ INSTALLED_APPS = [
     'vm_helpers',
 ]
 
+MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
 ROOT_URLCONF = 'pyvmomi_restapi.urls'
 
 TEMPLATES = [
@@ -55,5 +62,87 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[%(levelname)s] [%(name)s.%(module)s.%(funcName)s:%(lineno)d] %(message)s'
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    'handlers': {
+        'console_verbose': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'info_verbose': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'console_verbose_prod': {
+            'level': 'INFO',
+            'filters': ['require_debug_false'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'develop_logger': {
+            'handlers': ['console_verbose'],
+            'level': 'INFO',
+            'filters': ['require_debug_true']
+        },
+        'info_logger': {
+            'handlers': ['info_verbose'],
+            'level': 'INFO',
+        },
+        'prod_logger': {
+            'handlers': ['console_verbose_prod'],
+            'level': 'ERROR',
+            'filters': ['require_debug_false']
+        },
+    }
+}
+
+if DEBUG:
+    PROJECT_LOGGING = 'develop_logger'
+else:
+    PROJECT_LOGGING = 'info_logger'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+# Disable browsable API in production
+if not DEBUG:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
+                'rest_framework.renderers.JSONRenderer',)
+
+# For using SSL with openshift
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+STATE_CHOICES = (
+    ('mount', 'mount'),
+    ('umount', 'umount'),
+)
+
+VMWare_USERNAME = os.environ.get('VMWare_USERNAME', 'giberish_user')
+VMWare_PASSWORD = os.environ.get('VMWare_PASSWORD', 'giberish_password')
 
 # vim: ai et ts=4 sw=4 sts=4 nu ru

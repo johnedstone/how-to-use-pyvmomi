@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+import logging
+
+from django.conf import settings
 from rest_framework import serializers
 
 from .models import (
     ManageCdrom,
 )
+
+logger = logging.getLogger(settings.PROJECT_LOGGING)
 
 class ManageCdromSerializer(serializers.HyperlinkedModelSerializer):
 
