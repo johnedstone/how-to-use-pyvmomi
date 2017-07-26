@@ -13,17 +13,16 @@ pip install -r requirements.txt
 ## Leveraging the Pyvmomi Community Samples
 In the example below, the following steps are demonstratned
 
-* Copy the file you'd like to modify from the [community samples](https://github.com/vmware/pyvmomi-community-samples/tree/master/samples)
+* Copy the file to be modified from the [community samples](https://github.com/vmware/pyvmomi-community-samples/tree/master/samples)
 * Update the relevant import statements to point to the sample module, to leverage the features in the community samples
-* Add your customization
+* Add other customizations
 * Delete the original sample file
 
 ```
 curl https://raw.githubusercontent.com/vmware/pyvmomi-community-samples/master/samples/get_vm_names.py > get_vm_names.py
 cp get_vm_names.py get_vm_names_catch.py
 
-# Add your changes
-
+# Update the import statemens and add customization
 
 diff -u get_vm_names.py get_vm_names_catch.py
 --- get_vm_names.py     2017-07-25 23:51:08.000192000 -0400
@@ -64,5 +63,6 @@ diff -u get_vm_names.py get_vm_names_catch.py
 
 rm get_vm_names.py
 
+# Test the new script
 python get_vm_names_catch.py -u '<username>' -s '<vSphere service to connect to>'
 ```
