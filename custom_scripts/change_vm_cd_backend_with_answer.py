@@ -82,6 +82,8 @@ def update_virtual_cd_backend_by_obj(si, vm_obj, cdrom_number,
     # Look for blocking question
     # Ref: http://www.lucd.info/2015/10/02/answer-the-question/
     if not full_path_to_iso:
+      # This loop is in place of vm_obj.UpdateViewData('runtime.question') which is in PowerCLI
+      #     but I can't find in pyvmomi
       for n in range(5):
         logging.info('interation: {}'.format(n))
         vm_obj_refresh = get_obj(content, vm_type, vm_obj.name)
