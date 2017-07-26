@@ -1,6 +1,6 @@
 ## Description
 
-The two python VMWare projects are well documented and have many good examples: [pyvmomi](https://github.com/vmware/pyvmomi), [pyvmomi-community-samples](https://github.com/vmware/pyvmomi-community-samples).  This repository describes how these to use these two projects, along with an example of a [python REST API](http://www.django-rest-framework.org/) that can be used as a wrapper for others to consume.
+The two python VMWare projects are well documented and have many good examples: [pyvmomi](https://github.com/vmware/pyvmomi), [pyvmomi-community-samples](https://github.com/vmware/pyvmomi-community-samples).  This repository describes how these to use these two projects, along with, *in progress*,  an example of a [python REST API](http://www.django-rest-framework.org/) that can be used as a wrapper for others to consume.
 
 ## Setup
 *Note: use python virtualenvs* 
@@ -67,7 +67,7 @@ rm get_vm_names.py
 python get_vm_names_catch.py -u '<username>' -s '<vSphere service to connect to>'
 ```
 
-The second example customizes the mount/umount CDROM ISO script, in order to handle question that is waiting for a response.
+The second example customizes the mount/umount CDROM ISO script, in order to handle question that is waiting for a response in VCenter.
 
 ```
 curl -s https://raw.githubusercontent.com/vmware/pyvmomi-community-samples/master/samples/change_vm_cd_backend.py > change_vm_cd_backend.py
@@ -165,3 +165,5 @@ INFO:root:Do the unlocking here
 VM CD/DVD 1 successfully state changed to Client Device
 
 ```
+
+##### vi: ai et ts=4 sw=4 sts=4 ru nu
