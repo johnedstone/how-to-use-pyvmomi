@@ -14,6 +14,7 @@
 
 import atexit
 import requests
+import sys
 from samples.tools import cli
 from pyVmomi import vim
 from pyVim.connect import SmartConnect, Disconnect
@@ -21,7 +22,7 @@ from samples.tools import tasks
 
 from time import sleep
 import logging
-DEBUG = True
+DEBUG = False
 if DEBUG:
     logging.basicConfig(level=logging.INFO)
 
@@ -81,10 +82,11 @@ def update_virtual_cd_backend_by_obj(si, vm_obj, cdrom_number,
 
     # Look for blocking question
     # Ref: http://www.lucd.info/2015/10/02/answer-the-question/
-    if not full_path_to_iso:
-      # This loop is in place of vm_obj.UpdateViewData('runtime.question') which is in PowerCLI
-      #     but I can't find in pyvmomi
-      for n in range(5):
+    # This loop is in place of vm_obj.UpdateViewData('runtime.question') which is in PowerCLI
+    #     but I can't find in pyvmomi
+
+    logging.info("Checking for the Guest Control Question")
+    for n in range(5):
         logging.info('interation: {}'.format(n))
         vm_obj_refresh = get_obj(content, vm_type, vm_obj.name)
         logging.info('vm_obj_refresh: {}'.format(vm_obj_refresh))
@@ -95,6 +97,12 @@ def update_virtual_cd_backend_by_obj(si, vm_obj, cdrom_number,
                 logging.info('Do the unlocking here')
                 # See https://github.com/vmware/pyvmomi-community-samples/blob/master/samples/virtual_machine_power_cycle_and_question.py
                 vm_obj_refresh.AnswerVM(question.id, '0')
+                if full_path_to_iso:
+                    sys.stderr.write("Hmm - There was a blocking question.  CDRom is probably unmounted now.\nIf you meant to mount it then try again.\n") 
+                    sys.exit(4)
+                else:
+                    sys.stdout.write("The Question has been answered 'Yes'. The CDRom is disconnected\n") 
+
                 break
         sleep(1)
 

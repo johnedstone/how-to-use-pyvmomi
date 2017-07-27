@@ -142,7 +142,7 @@ STATE_CHOICES = (
     ('umount', 'umount'),
 )
 
-VMWare_USERNAME = os.environ.get('VMWare_USERNAME', 'giberish_user')
-VMWare_PASSWORD = os.environ.get('VMWare_PASSWORD', 'giberish_password')
+VSPHERE_USERNAME = os.environ.get('VSPHERE_USERNAME', 'giberish_user')
+VSPHERE_PASSWORD = os.environ.get('VSPHERE_PASSWORD', 'giberish_password')
 
 # vim: ai et ts=4 sw=4 sts=4 nu ru

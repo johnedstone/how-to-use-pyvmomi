@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import logging, shlex, subprocess
+import logging, os, shlex, subprocess
 import jsonpickle
 from threading import Timer
 
@@ -14,7 +14,6 @@ def manage_cdrom(obj):
     """
   
     kill = lambda process: process.kill()
-    cmd = 'echo boo'
 
     class Result(object):
 
@@ -26,10 +25,40 @@ def manage_cdrom(obj):
         
 
     result = Result()
+    user = settings.VSPHERE_USERNAME
+    passwd = settings.VSPHERE_PASSWORD
+    vsphere_service = ''
+    vmname = ''
+    iso = ''
 
+    cwd = os.path.dirname(__file__)
+    logger.debug('path: {}'.format(cwd))
+    if obj.state == 'mount':
+        cmd = """python {cwd}/change_vm_cd_backend_with_answer.py -u '{user}' -p '{passwd}' -s '{vsphere_service}' -n '{vmname}' -m 1 -i '{iso}'""".format(
+                  cwd=cwd,
+                  user=user,
+                  passwd=passwd,
+                  vsphere_service=vshpere_service,
+                  vmname=vmname,
+                  iso=iso,
+              )
+    elif obj.state == 'umount':
+        cmd = """python {cwd}/change_vm_cd_backend_with_answer.py -u '{user}' -p '{passwd}' -s '{vsphere_service}' -n '{vmname}' -m 1""".format(
+                  cwd=cwd,
+                  user=user,
+                  passwd=passwd,
+                  vsphere_service=vshpere_service,
+                  iso=iso,
+              )
+    else:
+        result.stderr = 'Command is mangled: check with the application ownder'
+        result.returncode = 98
+        return result
+
+    logger.info('Command: {}'.format(cmd))
     p1 = subprocess.Popen(shlex.split(cmd),
                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    my_timer = Timer(30, kill, [p1])
+    my_timer = Timer(25, kill, [p1])
 
     try:
         my_timer.start()
@@ -44,7 +73,7 @@ def manage_cdrom(obj):
     if result.returncode == -9:
         result.stderr += 'Call to cdrom killed by the Timer'
 
-    logger.info(jsonpickle.encode(result))
+    logger.debug(jsonpickle.encode(result))
     return result
 
 # vim: ai et ts=4 sw=4 sts=4 nu ru
