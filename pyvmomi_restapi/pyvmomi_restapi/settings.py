@@ -158,4 +158,7 @@ STATE_CHOICES = (
 VSPHERE_USERNAME = os.environ.get('VSPHERE_USERNAME', 'giberish_user')
 VSPHERE_PASSWORD = os.environ.get('VSPHERE_PASSWORD', 'giberish_password')
 
+SWAGGER_SETTINGS = {
+    'VALIDATOR_URL': None,
+}
 # vim: ai et ts=4 sw=4 sts=4 nu ru

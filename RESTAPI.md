@@ -145,4 +145,3 @@ oc new-app -f openshift/templates/pyvmomi_restapi.yaml \
     --param=VSPHERE_PASSWORD=${VSPHERE_PASSWORD}
 ```
 
-####### vi: ai et ts=4 sw=4 sts=4 ru nu filetype=markdown

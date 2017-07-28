@@ -193,4 +193,3 @@ VM CD/DVD 1 successfully state changed to Client Device
 
 ```
 
-####### vi: ai et ts=4 sw=4 sts=4 ru nu
