@@ -112,4 +112,9 @@ X-Frame-Options: SAMEORIGIN
 ```
 
 Other errors will include using an incorrect iso_path or vmname.
+
+## Openshift: Up and running
+
+```
+```
 ####### vi: ai et ts=4 sw=4 sts=4 ru nu filetype=markdown

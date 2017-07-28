@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^$', lambda x: redirect('/api/', permanent=False), name='home'),
     url(r'^swagger/$', schema_view),
     url(r'^api/', include(vm_helpers_router.urls)),
+    url(r'^liveness/', lambda request:HttpResponse(status=200)),
+    url(r'^readiness/', lambda request:HttpResponse(status=200)),
 ]
