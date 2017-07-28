@@ -1,6 +1,33 @@
-## Description
+## Introduction
+
+### Description
 
 The two python VMWare projects are well documented and have many good examples: [pyvmomi](https://github.com/vmware/pyvmomi), [pyvmomi-community-samples](https://github.com/vmware/pyvmomi-community-samples).  This repository describes how these to use these two projects, along with, *in progress*,  an example of a [python REST API](http://www.django-rest-framework.org/) that can be used as a wrapper for others to consume.
+
+### Quick Usage Summary
+This project can be used two ways.
+
+* From the command line
+* As a REST API
+
+#### Usage: From the Command Line
+
+```
+# Mount the iso
+cd custom_scripts
+python change_vm_cd_backend_with_answer.py -u 'username' -s '<vSphere service to connect to>' -n '<VMNAME>' -m 1 -i '[datastore] path-to-iso'
+Searching for VM VMNAME
+VM CD/DVD 1 successfully state changed to [datastore] path-to-iso 
+
+# Umount the iso
+python change_vm_cd_backend_with_answer.py -u 'username' -s '<vSphere service to connect to>' -n '<VMNAME>'' -m 1
+Searching for VM VMName
+INFO:root:Do the unlocking here
+VM CD/DVD 1 successfully state changed to Client Device
+```
+
+#### Usage: REST API
+See RESTAPI.md
 
 ## Setup
 *Note: use python virtualenvs* 
@@ -166,4 +193,6 @@ VM CD/DVD 1 successfully state changed to Client Device
 
 ```
 
-##### vi: ai et ts=4 sw=4 sts=4 ru nu
+<span style="display: none;">
+###### vi: ai et ts=4 sw=4 sts=4 ru nu
+</span>
