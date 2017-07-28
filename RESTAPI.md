@@ -17,11 +17,24 @@ export DEBUG=on SPHERE_USERNAME='someusername' VSPHERE_PASSWORD='somepassword'
 python manage.py runserver
 ```
 
-### Swagger
+## Swagger
 Swagger documentation URL: /swagger/
 
-### Usage
+## Usage
 Note: in these examples the python project [HTTPie](https://httpie.org/) is used in place of curl
+
+### What is success?
+A `mount` or `umount`, to be successful will return two fields:
+
+* shell_returncode: 0
+* status: Success
+
+If these two fields are display with 0 and Success, respectively
+examine these fields:
+
+* stderr
+* stdout
+
 
 ### Mount and Umount
 
