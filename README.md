@@ -94,7 +94,7 @@ rm get_vm_names.py
 python get_vm_names_catch.py -u '<username>' -s '<vSphere service to connect to>'
 ```
 
-The second example customizes the mount/umount CDROM ISO script, in order to handle question that is waiting for a response in VCenter.
+The second example customizes the mount/umount CDROM ISO script, in order to handle question that is waiting for a response in UI.
 
 ```
 curl -s https://raw.githubusercontent.com/vmware/pyvmomi-community-samples/master/samples/change_vm_cd_backend.py > change_vm_cd_backend.py
@@ -193,6 +193,4 @@ VM CD/DVD 1 successfully state changed to Client Device
 
 ```
 
-<span style="display: none;">
-###### vi: ai et ts=4 sw=4 sts=4 ru nu
-</span>
+####### vi: ai et ts=4 sw=4 sts=4 ru nu

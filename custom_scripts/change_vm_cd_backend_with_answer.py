@@ -101,7 +101,7 @@ def update_virtual_cd_backend_by_obj(si, vm_obj, cdrom_number,
                     sys.stderr.write("Hmm - There was a blocking question.  CDRom is probably unmounted now.\nIf you meant to mount it then try again.\n") 
                     sys.exit(4)
                 else:
-                    sys.stdout.write("The Question has been answered 'Yes'. The CDRom is disconnected\n") 
+                    sys.stdout.write("The Pending Question has been answered 'Yes'. The CDRom is disconnected\n") 
 
                 break
         sleep(1)

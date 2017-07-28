@@ -16,6 +16,13 @@ class ManageCdromSerializer(serializers.HyperlinkedModelSerializer):
         model = ManageCdrom
         fields = '__all__'
 
-        # read_only_fields = fields
+        read_only_fields = [
+            'created',
+            'shell_returncode',
+            'status',
+            'stdout',
+            'stderr',
+            'url',
+        ]
 
 # vim: ai et ts=4 sts=4 sw=4 nu ru

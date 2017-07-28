@@ -25,9 +25,20 @@ from .serializers import (
 logger = logging.getLogger(settings.PROJECT_LOGGING)
 
 class ManageCdromViewSet(viewsets.ModelViewSet):
+    """
+    retrieve:
+    Return a given cdrom transaction
+
+    list:
+    Return a list of cdrom transactions
+
+    create:
+    Mount or umount a cdrom for a VM
+    """
+
     queryset = ManageCdrom.objects.all()
     serializer_class = ManageCdromSerializer
-    #http_method_names = ['get']
+    http_method_names = ['get', 'post', 'head', 'options']
 
     def create(self, request, *args, **kwargs):
         detail = check_state(request)

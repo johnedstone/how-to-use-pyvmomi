@@ -27,15 +27,17 @@ class ManageCdrom(TimeStampModel):
 
     STATE_CHOICES = settings.STATE_CHOICES
 
-    vmname = models.CharField(max_length=100)
-    vcenter = models.CharField(max_length=100)
-    state = models.CharField(choices=STATE_CHOICES, max_length=25)
     iso_path = models.CharField(max_length=200, help_text='[datastore] path/to/iso', blank=True )
+    unit_number = models.IntegerField(default=1, help_text='CD/DVD unit number. Default=1')
+
+    vmname = models.CharField(max_length=100)
+    vsphere_service = models.CharField(max_length=100)
+    state = models.CharField(choices=STATE_CHOICES, max_length=25)
     
-    returncode = models.IntegerField(default=999, help_text='No need to edit')
-    status = models.CharField(max_length=20, default='pending', help_text='No need to edit')
-    stdout = models.TextField(max_length=100, default='', help_text='No need to edit')
-    stderr = models.TextField(max_length=100, default='', help_text='No need to edit')
+    shell_returncode = models.IntegerField(default=999, help_text='read only')
+    status = models.CharField(max_length=20, default='pending', help_text='read only')
+    stdout = models.TextField(max_length=100, default='', help_text='read only')
+    stderr = models.TextField(max_length=100, default='', help_text='read only')
 
     class Meta:
         ordering = ['vmname']
@@ -48,12 +50,14 @@ class ManageCdrom(TimeStampModel):
             logger.info('vmname: {}'.format(self.vmname))
             result = manage_cdrom(self)
 
-            self.returncode = result.returncode
+            self.shell_returncode = result.returncode
             self.stdout = result.stdout
             self.stderr = result.stderr
 
             if result.ok:
-                self.status = "Finished"
+                self.status = "Success"
+                if 'VM not found' in self.stdout:
+                    self.status = 'Failed'
             else:
                 self.status = 'Failed'
         except Exception as e:

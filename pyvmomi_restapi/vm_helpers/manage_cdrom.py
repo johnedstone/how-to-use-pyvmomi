@@ -34,21 +34,23 @@ def manage_cdrom(obj):
     cwd = os.path.dirname(__file__)
     logger.debug('path: {}'.format(cwd))
     if obj.state == 'mount':
-        cmd = """python {cwd}/change_vm_cd_backend_with_answer.py -u '{user}' -p '{passwd}' -s '{vsphere_service}' -n '{vmname}' -m 1 -i '{iso}'""".format(
+        cmd = """python {cwd}/change_vm_cd_backend_with_answer.py -u '{user}' -p '{passwd}' -s '{vsphere_service}' -n '{vmname}' -m {unit_number} -i '{iso}'""".format(
                   cwd=cwd,
                   user=user,
                   passwd=passwd,
-                  vsphere_service=vshpere_service,
-                  vmname=vmname,
-                  iso=iso,
+                  vsphere_service=obj.vsphere_service,
+                  vmname=obj.vmname,
+                  unit_number=obj.unit_number,
+                  iso=obj.iso_path,
               )
     elif obj.state == 'umount':
-        cmd = """python {cwd}/change_vm_cd_backend_with_answer.py -u '{user}' -p '{passwd}' -s '{vsphere_service}' -n '{vmname}' -m 1""".format(
+        cmd = """python {cwd}/change_vm_cd_backend_with_answer.py -u '{user}' -p '{passwd}' -s '{vsphere_service}' -n '{vmname}' -m {unit_number}""".format(
                   cwd=cwd,
                   user=user,
                   passwd=passwd,
-                  vsphere_service=vshpere_service,
-                  iso=iso,
+                  vsphere_service=obj.vsphere_service,
+                  unit_number=obj.unit_number,
+                  vmname=obj.vmname,
               )
     else:
         result.stderr = 'Command is mangled: check with the application ownder'
