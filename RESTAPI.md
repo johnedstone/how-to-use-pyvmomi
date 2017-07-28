@@ -29,7 +29,7 @@ A `mount` or `umount`, to be successful will return two fields:
 * shell_returncode: 0
 * status: Success
 
-If these two fields are display with 0 and Success, respectively
+If these two fields are not displayed with 0 and Success, respectively
 examine these fields:
 
 * stderr
@@ -92,7 +92,7 @@ X-Frame-Options: SAMEORIGIN
 
 ### Common Errors
 
-If the CDROM is mounted it, mounting again will unmount it and show status="Failed" and shell_returncode=4.  In this case
+If the CDROM is already mounted it, mounting again will unmount it and show status="Failed" and shell_returncode=4.  In this case
 repeat the POST to mount it.
 
 ```

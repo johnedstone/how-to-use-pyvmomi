@@ -102,3 +102,4 @@ ENV/
 
 # django
 db.sqlite3
+staticfiles
