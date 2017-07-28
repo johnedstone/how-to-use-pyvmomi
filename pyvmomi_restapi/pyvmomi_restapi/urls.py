@@ -1,4 +1,5 @@
 from django.conf.urls import url, include  
+from django.http import HttpResponse
 from django.shortcuts import redirect
 
 from rest_framework_swagger.views import get_swagger_view

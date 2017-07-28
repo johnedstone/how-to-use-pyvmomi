@@ -129,5 +129,20 @@ Other errors will include using an incorrect iso_path or vmname.
 ## Openshift: Up and running
 
 ```
+oc new-project some-project
+
+oc secrets new-sshauth sshsecret --ssh-privatekey=path-to/key
+
+oc secret add serviceaccount/builder secrets/sshsecret
+
+source typical.sh
+
+oc new-app -f openshift/templates/pyvmomi_restapi.yaml \
+    --param=DEBUG=${DEBUG} \
+    --param=PIP_PROXY=${PIP_PROXY} \
+    --param=APPLICATION_DOMAIN=${APPLICATION_DOMAIN} \
+    --param=VSPHERE_USERNAME=${VSPHERE_USERNAME} \
+    --param=VSPHERE_PASSWORD=${VSPHERE_PASSWORD}
 ```
+
 ####### vi: ai et ts=4 sw=4 sts=4 ru nu filetype=markdown
