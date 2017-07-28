@@ -1,0 +1,181 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: pyvmomi-restapi
+message: |-
+    Templates presents REST API for promotions
+metadata:
+  annotations:
+    description: 'Pyvmomi REST API'
+    tags: quickstart,python,django,restapi
+    iconClass: icon-python
+  name: pyvmomi-restapi
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Exposes and load balances the application pods
+    name: ${NAME}
+  spec:
+    ports:
+    - name: web
+      port: 8080
+      targetPort: 8080
+    selector:
+      name: ${NAME}
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: ${NAME}
+    annotations:
+      haproxy.router.openshift.io/timeout: 300s
+  spec:
+    host: ${APPLICATION_DOMAIN}
+    to:
+      kind: Service
+      name: ${NAME}
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      description: Keeps track of changes in the application image
+    name: ${NAME}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      description: Defines how to deploy the application server
+    name: ${NAME}
+  spec:
+    replicas: 1
+    selector:
+      name: ${NAME}
+    strategy:
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          name: ${NAME}
+        name: ${NAME}
+      spec:
+        containers:
+        - env:
+          - name: APP_CONFIG
+            value: ${APP_CONFIG}
+          - name: DJANGO_SECRET_KEY
+            value: ${DJANGO_SECRET_KEY}
+          - name: ALLOWED_HOSTS
+            value: ${ALLOWED_HOSTS}
+          - name: DEBUG
+            value: ${DEBUG}
+          - name: VSPHERE_USERNAME 
+            value: ${VSPHERE_USERNAME}
+          - name: VSPHERE_PASSWORD 
+            value: ${VSPHERE_PASSWORD}
+          image: ' '
+          livenessProbe:
+            httpGet:
+              path: /liveness/
+              port: 8080
+            initialDelaySeconds: 30
+            timeoutSeconds: 3
+          name: pyvmomi-restapi
+          ports:
+          - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /readiness/
+              port: 8080
+            initialDelaySeconds: 3
+            timeoutSeconds: 3
+          resources:
+            limits:
+              memory: ${MEMORY_LIMIT}
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - pyvmomi-restapi
+        from:
+          kind: ImageStreamTag
+          name: ${NAME}:latest
+      type: ImageChange
+    - type: ConfigChange
+parameters:
+- description: The name assigned to all of the frontend objects defined in this template.
+  displayName: Name
+  name: NAME
+  required: true
+  value: pyvmomi-restapi
+- description: The OpenShift Namespace where the ImageStream resides.
+  displayName: Namespace
+  name: NAMESPACE
+  required: true
+  value: openshift
+- description: Maximum amount of memory the Django container can use.
+  displayName: Memory Limit
+  name: MEMORY_LIMIT
+  required: true
+  value: 512Mi
+- description: The URL of the repository with your application source code.
+  displayName: Git Repository URL
+  name: SOURCE_REPOSITORY_URL
+  required: true
+  value: 'git@github.com:johnedstone/how-to-use-pyvmomi.git'
+- description: Set this to a branch name, tag or other ref of your repository if you
+    are not using the default branch.
+  displayName: Git Reference
+  name: SOURCE_REPOSITORY_REF
+- description: Set this to the relative path to your project if it is not in the root
+    of your repository.
+  displayName: Context Directory
+  name: CONTEXT_DIR
+  value: 'pyvmomi_restapi'
+- description: The exposed hostname that will route to the Django service, if left
+    blank a value will be defaulted.
+  displayName: Application Hostname
+  name: APPLICATION_DOMAIN
+- description: A secret string used to configure the GitHub webhook.
+  displayName: GitHub Webhook Secret
+  value: sshsecret
+  name: GITHUB_WEBHOOK_SECRET
+- description: Relative path to Gunicorn configuration file (optional).
+  displayName: Application Configuration File Path
+  name: APP_CONFIG
+- description: Set this to a long random string.
+  displayName: Django Secret Key
+  from: '[\w]{50}'
+  generate: expression
+  name: DJANGO_SECRET_KEY
+- description: The custom PyPi index URL
+  displayName: Custom PyPi Index URL
+  name: PIP_INDEX_URL
+- name: PIP_PROXY
+  displayName: PIP PROXY
+  description: PIP environment variable for proxy
+- name: DEBUG
+  displayName: Django Debug settings variable
+  description: Django Debug settings variable. If left unset it will be off (False)
+  value: 'off'
+- description: Allowed Host for Django Setting
+  name: ALLOWED_HOSTS
+  displayName: Allowed Hosts
+  value: '*'
+- description: Upgrade pip to the latest
+  name: UPGRADE_PIP_TO_LATEST
+  displayName: Upgrade pip to latest
+  value: 'any_value_example_yes'
+- name: VSPHERE_USERNAME
+  displayName: VSPHERE USERNAME
+  description: vsphere service username
+  required: true
+- name: VSPHERE_PASSWORD
+  displayName: VSPHERE PASSWORD
+  description: vsphere service password
+  required: true
+
+# vim: ai et ts=2 sts=2 sw=2 nu
