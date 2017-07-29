@@ -98,7 +98,7 @@ def update_virtual_cd_backend_by_obj(si, vm_obj, cdrom_number,
     #     but I can't find in pyvmomi
 
     logging.info("Checking for the Guest Control Question")
-    for n in range(5):
+    for n in range(6):
         logging.info('interation: {}'.format(n))
         vm_obj_refresh = get_obj(content, vm_type, vm_obj.name)
         logging.info('vm_obj_refresh: {}'.format(vm_obj_refresh))
@@ -116,7 +116,7 @@ def update_virtual_cd_backend_by_obj(si, vm_obj, cdrom_number,
                     sys.stdout.write("The Pending Question has been answered 'Yes'. The CDRom is disconnected\n") 
 
                 break
-        sleep(1)
+        sleep(0.5)
 
     tasks.wait_for_tasks(si, [task])
     return True
