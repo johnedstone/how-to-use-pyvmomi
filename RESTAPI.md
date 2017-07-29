@@ -8,8 +8,15 @@ any platform that Django runs on.
 
 ## Quick Summary
 Once this REST API is implemented in Openshift, the following examples show mounting and
-umounting an ISO in the CDROM.  Note: The Timer() in manage_cdrom.py may have to be adjusted based on the timing of
-the vcenter response.
+umounting an ISO in the CDROM.
+
+* Note: Larger vCenters have longer response times.  In this case, increase settings.PVMOMI_TIMEOUT
+and/or settings.ITERATIONS_WAITING_FOR_BLOCKING_QUESTION
+
+* The `--timeout 300` in the example sets the requester to wait 5 min for a responce.  Internally,
+for Openshift, in the file `.s2i/bin/run` gunicorn is set for 10 min.
+
+* In the example below [HTTPie](https://httpie.org/) is used in place of curl.
 
 ```
 http --timeout 300 POST https://FQDN/api/vm-helpers/manage-cdrom/ state=mount vmname='vmname' vsphere_service='vsphere_service' iso_path='[datastore] path/some.iso'
@@ -131,6 +138,41 @@ X-Frame-Options: SAMEORIGIN
     "vsphere_service": "vshpere_service",
     "vmname": "vmname"
 }
+
+```
+
+Here is an error where there is a successful umount, yet there is a vim.fault.GenericVmConfigFault
+
+```
+time http --timeout 300 POST https://FQDN/api/vm-helpers/manage-cdrom/ state=umount vmname='vmname' vsphere_service=vsphere_service
+HTTP/1.1 201 Created
+Allow: GET, POST, HEAD, OPTIONS
+Content-Length: 1230
+Content-Type: application/json
+Date: Sat, 29 Jul 2017 07:27:02 GMT
+Location: https://FQDM/api/vm-helpers/manage-cdrom/4/
+Server: gunicorn/19.7.1
+Set-Cookie: 5b992246cb8ec8e2ffa72e32820fea5d=56285f5d04fc2e8e5017d2469ad746fd; path=/; HttpOnly; Secure
+X-Frame-Options: SAMEORIGIN
+
+{
+    "created": "2017-07-29T07:27:02.296155Z",
+    "iso_path": "",
+    "shell_returncode": 0,
+    "state": "umount",
+    "status": "Success",
+    "stderr": "ERROR:root:update_virtual_cd_backend_by_obj Exception: (vim.fault.GenericVmConfigFault) {\n   dynamicType = <unset>,\n   dynamicProperty = (vmodl.DynamicProperty) [],\n   msg = \"Device 'ide0:0' already exists.\",\n   faultCause = <unset>,\n   faultMessage = (vmodl.LocalizableMessage) [\n      (vmodl.LocalizableMessage) {\n         dynamicType = <unset>,\n         dynamicProperty = (vmodl.DynamicProperty) [],\n         key = 'msg.disk.alreadyExists',\n         arg = (vmodl.KeyAnyValue) [\n            (vmodl.KeyAnyValue) {\n               dynamicType = <unset>,\n               dynamicProperty = (vmodl.DynamicProperty) [],\n               key = '1',\n               value = 'ide0:0'\n            }\n         ],\n         message = \"Device 'ide0:0' already exists.\"\n      }\n   ],\n   reason = \"Device 'ide0:0' already exists.\"\n}\n",
+    "stdout": "Searching for VM vmname\nVM CD/DVD 1 successfully state changed to Client Device\n",
+    "unit_number": 1,
+    "url": "https://FQDN/api/vm-helpers/manage-cdrom/4/",
+    "vmname": "vmname",
+    "vsphere_service": "vsphere_service"
+}
+
+
+real    2m36.955s
+user    0m0.252s
+sys     0m0.145s
 
 ```
 

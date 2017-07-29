@@ -161,4 +161,12 @@ VSPHERE_PASSWORD = os.environ.get('VSPHERE_PASSWORD', 'giberish_password')
 SWAGGER_SETTINGS = {
     'VALIDATOR_URL': None,
 }
+
+# Timeout waiting for vCenter to return
+PVMOMI_TIMEOUT = 240
+
+# Number of times to refresh the pseudo code, vm_obj.UpdateViewData,
+# looking for the blocking question to appear.
+ITERATIONS_WAITING_FOR_BLOCKING_QUESTION = 3
+
 # vim: ai et ts=4 sw=4 sts=4 nu ru

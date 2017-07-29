@@ -22,6 +22,8 @@ from pyVmomi import vim
 from pyVim.connect import SmartConnect, Disconnect
 from samples.tools import tasks
 
+from django.conf import settings
+
 from time import sleep
 import logging
 DEBUG = False
@@ -99,7 +101,7 @@ def update_virtual_cd_backend_by_obj(si, vm_obj, cdrom_number,
     #     but I can't find in pyvmomi
 
     logging.info("Checking for the Guest Control Question")
-    for n in range(3):
+    for n in range(settings.ITERATIONS_WAITING_FOR_BLOCKING_QUESTION):
         logging.info('interation: {}'.format(n))
         vm_obj_refresh = get_obj(content, vm_type, vm_obj.name)
         logging.info('vm_obj_refresh: {}'.format(vm_obj_refresh))
