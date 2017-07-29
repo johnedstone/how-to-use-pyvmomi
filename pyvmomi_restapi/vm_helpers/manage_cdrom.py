@@ -57,7 +57,7 @@ def manage_cdrom(obj):
         result.returncode = 98
         return result
 
-    logger.info('Command: {}'.format(cmd))
+    logger.debug('Command: {}'.format(cmd))
     p1 = subprocess.Popen(shlex.split(cmd),
                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     my_timer = Timer(240, kill, [p1])
