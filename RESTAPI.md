@@ -6,6 +6,16 @@ the [Django Rest Framework](http://www.django-rest-framework.org/).  This django
 project is written for PaaS, specifically Openshift.  But it can be adapted on
 any platform that Django runs on.
 
+## Quick Summary
+Once this REST API is implemented in Openshift, the following examples show mounting and
+umounting an ISO in the CDROM.  Note: The Timer() in manage_cdrom.py may have to be adjusted based on the timing of
+the vcenter response.
+
+```
+http --timeout 300 POST https://FQDN/api/vm-helpers/manage-cdrom/ state=mount vmname='vmname' vsphere_service='vsphere_service' iso_path='[datastore] path/some.iso'
+http --timeout 300 POST https://FQDN/api/vm-helpers/manage-cdrom/ state=umount vmname='vmname' vsphere_service='vsphere_service'
+```
+
 ## Setup
 ```
 cd pyvmomi_restapi

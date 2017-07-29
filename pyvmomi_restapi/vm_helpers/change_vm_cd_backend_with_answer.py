@@ -32,6 +32,7 @@ if DEBUG:
 if hasattr(requests.packages.urllib3, 'disable_warnings'):
     requests.packages.urllib3.disable_warnings()
 
+# Because of cert error in Openshift ...
 # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error
 # https://gist.github.com/michaelrice/a6794a017e349fc65d01
 try:
@@ -164,8 +165,11 @@ def main():
     vm_obj = get_obj(content, [vim.VirtualMachine], args.vmname)
 
     if vm_obj:
-        update_virtual_cd_backend_by_obj(si, vm_obj, args.unitnumber,
-                                         content, [vim.VirtualMachine], args.iso)
+        try:
+            update_virtual_cd_backend_by_obj(si, vm_obj, args.unitnumber,
+                                             content, [vim.VirtualMachine], args.iso)
+        except Exception as e:
+            logging.error('update_virtual_cd_backend_by_obj Exception: {}'.format(e))
         device_change = args.iso if args.iso else 'Client Device'
         print 'VM CD/DVD {} successfully' \
               ' state changed to {}'.format(args.unitnumber, device_change)
