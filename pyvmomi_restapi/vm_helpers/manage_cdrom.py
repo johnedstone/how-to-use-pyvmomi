@@ -60,7 +60,7 @@ def manage_cdrom(obj):
     logger.info('Command: {}'.format(cmd))
     p1 = subprocess.Popen(shlex.split(cmd),
                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    my_timer = Timer(26, kill, [p1])
+    my_timer = Timer(30, kill, [p1])
 
     try:
         my_timer.start()
