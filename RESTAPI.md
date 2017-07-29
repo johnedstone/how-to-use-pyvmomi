@@ -92,7 +92,7 @@ X-Frame-Options: SAMEORIGIN
 
 ### Common Errors
 
-If the CDROM is already mounted it, mounting again will unmount it and show status="Failed" and shell_returncode=4.  In this case
+If the CDROM is already mounted it, in some cases, mounting it again will unmount it and show status="Failed" and shell_returncode=4.  In this case
 repeat the POST to mount it.
 
 ```
