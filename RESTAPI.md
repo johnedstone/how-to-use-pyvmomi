@@ -14,7 +14,7 @@ umounting an ISO in the CDROM.
 and/or settings.ITERATIONS_WAITING_FOR_BLOCKING_QUESTION
 
 * The `--timeout 300` in the example sets the requester to wait 5 min for a responce.  Internally,
-for Openshift, in the file `.s2i/bin/run` gunicorn is set for 10 min.
+for Openshift, in the file `.s2i/bin/run`, gunicorn is set for 10 min.
 
 * In the example below [HTTPie](https://httpie.org/) is used in place of curl.
 
