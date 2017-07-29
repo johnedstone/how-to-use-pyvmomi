@@ -14,7 +14,9 @@
 
 import atexit
 import requests
+import ssl
 import sys
+
 from samples.tools import cli
 from pyVmomi import vim
 from pyVim.connect import SmartConnect, Disconnect
@@ -30,6 +32,16 @@ if DEBUG:
 if hasattr(requests.packages.urllib3, 'disable_warnings'):
     requests.packages.urllib3.disable_warnings()
 
+# https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error
+# https://gist.github.com/michaelrice/a6794a017e349fc65d01
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    # Legacy Python that doesn't verify HTTPS certificates by default
+    pass
+else:
+    # Handle target environment that doesn't support HTTPS verification
+    ssl._create_default_https_context = _create_unverified_https_context
 
 def update_virtual_cd_backend_by_obj(si, vm_obj, cdrom_number,
                                      content, vm_type,
