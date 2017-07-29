@@ -13,11 +13,19 @@ def check_state(request):
 
     state_data = request.data.get('state', None)
     iso_path_data = request.data.get('iso_path', None)
+    vmname_data = request.data.get('vmname', None)
+    vsphere_service_data = request.data.get('vsphere_service', None)
 
     logger.info('state_data: {}'.format(state_data))
 
     if not state_data:
         detail['state'] = ["""This field is required: {} """.format(CHOICES)]
+
+    if not vmname_data:
+        detail['vmname'] = ["""This field is required"""]
+
+    if not vsphere_service_data:
+        detail['vsphere_service'] = ["""This field is required"""]
 
     if state_data and state_data not in STATE_CHOICES:
         detail['state'] = ["""{} is not a valid choice: {} """.format(state_data, CHOICES)]

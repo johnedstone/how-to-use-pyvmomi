@@ -17,8 +17,8 @@ export DEBUG=on SPHERE_USERNAME='someusername' VSPHERE_PASSWORD='somepassword'
 python manage.py runserver
 ```
 
-## Swagger
-Swagger documentation URL: /swagger/
+## Swagger (documentation)
+URL for documentation with Swagger: /swagger/
 
 ## Usage
 Note: in these examples the python project [HTTPie](https://httpie.org/) is used in place of curl
