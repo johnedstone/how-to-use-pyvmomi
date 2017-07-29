@@ -24,7 +24,7 @@ from samples.tools import tasks
 
 from time import sleep
 import logging
-DEBUG = False
+DEBUG = True
 if DEBUG:
     logging.basicConfig(level=logging.INFO)
 
