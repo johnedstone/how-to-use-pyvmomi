@@ -34,7 +34,7 @@ def manage_cdrom(obj):
     cwd = os.path.dirname(__file__)
     logger.debug('path: {}'.format(cwd))
     if obj.state == 'mount':
-        cmd = """python {cwd}/change_vm_cd_backend_with_answer.py -u '{user}' -p '{passwd}' -s '{vsphere_service}' -n '{vmname}' -m {unit_number} -i '{iso}'""".format(
+        cmd = """python {cwd}/change_vm_cd_backend_with_answer.py -S -u '{user}' -p '{passwd}' -s '{vsphere_service}' -n '{vmname}' -m {unit_number} -i '{iso}'""".format(
                   cwd=cwd,
                   user=user,
                   passwd=passwd,
@@ -44,7 +44,7 @@ def manage_cdrom(obj):
                   iso=obj.iso_path,
               )
     elif obj.state == 'umount':
-        cmd = """python {cwd}/change_vm_cd_backend_with_answer.py -u '{user}' -p '{passwd}' -s '{vsphere_service}' -n '{vmname}' -m {unit_number}""".format(
+        cmd = """python {cwd}/change_vm_cd_backend_with_answer.py -S -u '{user}' -p '{passwd}' -s '{vsphere_service}' -n '{vmname}' -m {unit_number}""".format(
                   cwd=cwd,
                   user=user,
                   passwd=passwd,
