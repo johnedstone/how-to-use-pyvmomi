@@ -216,5 +216,13 @@ parameters:
   displayName: VSPHERE PASSWORD
   description: vsphere service password
   required: true
+- description: Timeout wating for vCenter to return
+  name: PVMOMI_TIMEOUT
+  displayName: PVMOMI TIMEOUT
+  value: 240 
+- description: Iterations waiting for blocking question
+  name: ITERATIONS_WAITING_FOR_BLOCKING_QUESTION
+  displayName: ITERATIONS WAITING FOR BLOCKING QUESTION
+  value: 3 
 
 # vim: ai et ts=2 sts=2 sw=2 nu

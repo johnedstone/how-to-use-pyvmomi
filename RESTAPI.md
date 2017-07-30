@@ -10,8 +10,8 @@ any platform that Django runs on.
 Once this REST API is implemented in Openshift, the following examples show mounting and
 umounting an ISO in the CDROM.
 
-* Note: Larger vCenters have longer response times.  In this case, increase settings.PVMOMI_TIMEOUT
-and/or settings.ITERATIONS_WAITING_FOR_BLOCKING_QUESTION
+* Note: Larger vCenters have longer response times.  In this case, increase parameters PVMOMI_TIMEOUT
+and/or ITERATIONS_WAITING_FOR_BLOCKING_QUESTION
 
 * The `--timeout 300` in the example sets the requester to wait 5 min for a responce.  Internally,
 for Openshift, in the file `.s2i/bin/run`, gunicorn is set for 10 min.
@@ -194,6 +194,8 @@ oc new-app -f openshift/templates/pyvmomi_restapi.yaml \
     --param=PIP_PROXY=${PIP_PROXY} \
     --param=APPLICATION_DOMAIN=${APPLICATION_DOMAIN} \
     --param=VSPHERE_USERNAME=${VSPHERE_USERNAME} \
-    --param=VSPHERE_PASSWORD=${VSPHERE_PASSWORD}
+    --param=VSPHERE_PASSWORD=${VSPHERE_PASSWORD} \
+    --param=PVMOMI_TIMEOUT=${PVMOMI_TIMEOUT} \
+    --param=ITERATIONS_WAITING_FOR_BLOCKING_QUESTION=${ITERATIONS_WAITING_FOR_BLOCKING_QUESTION}
 ```
 
