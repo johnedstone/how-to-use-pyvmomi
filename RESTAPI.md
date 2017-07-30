@@ -23,6 +23,14 @@ http --timeout 300 POST https://FQDN/api/vm-helpers/manage-cdrom/ state=mount vm
 http --timeout 300 POST https://FQDN/api/vm-helpers/manage-cdrom/ state=umount vmname='vmname' vsphere_service='vsphere_service'
 ```
 
+* These same commands, executed with curl are listed here
+
+```
+curl -k -X POST -H "Content-Type: application/json" -d '{"state": "mount", "vmname": "vmname", "vsphere_service": "vsphere_service",  "iso_path": "[datastore] path/some.iso"}' https://FQDN/api/vm-helpers/manage-cdrom/
+
+curl -k -X POST -H "Content-Type: application/json" -d '{"state": "umount", "vmname": "vmname", "vsphere_service": "vsphere_service"}' https://FQDN/api/vm-helpers/manage-cdrom/
+```
+
 ## Setup
 ```
 cd pyvmomi_restapi
