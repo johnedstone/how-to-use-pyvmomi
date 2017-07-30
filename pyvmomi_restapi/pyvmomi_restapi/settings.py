@@ -163,10 +163,10 @@ SWAGGER_SETTINGS = {
 }
 
 # Timeout waiting for vCenter to return
-PVMOMI_TIMEOUT = os.environ.get('PVMOMI_TIMEOUT', 240)
+PVMOMI_TIMEOUT = int(os.environ.get('PVMOMI_TIMEOUT', '240'))
 
 # Number of times to refresh the pseudo code, vm_obj.UpdateViewData,
 # looking for the blocking question to appear.
-ITERATIONS_WAITING_FOR_BLOCKING_QUESTION = os.environ.get('ITERATIONS_WAITING_FOR_BLOCKING_QUESTION', 3)
+ITERATIONS_WAITING_FOR_BLOCKING_QUESTION = int(os.environ.get('ITERATIONS_WAITING_FOR_BLOCKING_QUESTION', '3'))
 
 # vim: ai et ts=4 sw=4 sts=4 nu ru
