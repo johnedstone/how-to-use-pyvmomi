@@ -10,11 +10,13 @@ any platform that Django runs on.
 Once this REST API is implemented in Openshift, the following examples show mounting and
 umounting an ISO in the CDROM.
 
-* Note: Larger vCenters have longer response times.  In this case, increase parameters PVMOMI_TIMEOUT
-and/or ITERATIONS_WAITING_FOR_BLOCKING_QUESTION
+* Note: Larger vCenters have longer response times.  In this case, increase the parameters PVMOMI_TIMEOUT
+and/or ITERATIONS_WAITING_FOR_BLOCKING_QUESTION.  The defaults are 240 sec and 3 iterations. This timeout
+is the time allowed before killing the internal call to vSphere. The iterations are looking for the
+blocking question, that appears in the UI, waiting to answer 'yes'.
 
-* The `--timeout 300` in the example sets the requester to wait 5 min for a responce.  Internally,
-for Openshift, in the file `.s2i/bin/run`, gunicorn is set for 10 min.
+* The `--timeout 300` in the examples below sets the client to wait 5 min for a responce.  Internally,
+for Openshift, in the file `.s2i/bin/run`, gunicorn is set to timeout 10 min.
 
 * In the example below [HTTPie](https://httpie.org/) is used in place of curl.
 
@@ -23,7 +25,7 @@ http --timeout 300 POST https://FQDN/api/vm-helpers/manage-cdrom/ state=mount vm
 http --timeout 300 POST https://FQDN/api/vm-helpers/manage-cdrom/ state=umount vmname='vmname' vsphere_service='vsphere_service'
 ```
 
-* These same commands, executed with curl are listed here
+* These same commands, executed with curl, are listed here.
 
 ```
 curl -k -X POST -H "Content-Type: application/json" -d '{"state": "mount", "vmname": "vmname", "vsphere_service": "vsphere_service",  "iso_path": "[datastore] path/some.iso"}' https://FQDN/api/vm-helpers/manage-cdrom/
