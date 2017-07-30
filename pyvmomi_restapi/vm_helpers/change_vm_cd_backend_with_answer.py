@@ -26,10 +26,12 @@ from samples.tools import tasks
 from time import sleep
 import logging
 
+from django.conf import settings
+
 ITERATIONS_WAITING_FOR_BLOCKING_QUESTION = int(os.environ.get('ITERATIONS_WAITING_FOR_BLOCKING_QUESTION', '3'))
 logging.info('ITERATIONS_WAITING_FOR_BLOCKING_QUESTION: {}'.format(ITERATIONS_WAITING_FOR_BLOCKING_QUESTION))
 
-DEBUG = False
+DEBUG = True
 if DEBUG:
     logging.basicConfig(level=logging.INFO)
 
