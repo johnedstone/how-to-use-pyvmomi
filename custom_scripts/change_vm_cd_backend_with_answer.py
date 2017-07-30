@@ -13,6 +13,7 @@
 # Updated Jul-2017 by E Johnstone, https://github.com/johnedstone, to deal with unmounting
 
 import atexit
+import os
 import requests
 import sys
 from samples.tools import cli
@@ -25,6 +26,9 @@ import logging
 DEBUG = True
 if DEBUG:
     logging.basicConfig(level=logging.INFO)
+
+ITERATIONS_WAITING_FOR_BLOCKING_QUESTION = int(os.environ.get('ITERATIONS_WAITING_FOR_BLOCKING_QUESTION', '3'))
+logging.info('ITERATIONS_WAITING_FOR_BLOCKING_QUESTION: {}'.format(ITERATIONS_WAITING_FOR_BLOCKING_QUESTION))
 
 # disable  urllib3 warnings
 if hasattr(requests.packages.urllib3, 'disable_warnings'):
@@ -86,7 +90,7 @@ def update_virtual_cd_backend_by_obj(si, vm_obj, cdrom_number,
     #     but I can't find in pyvmomi
 
     logging.info("Checking for the Guest Control Question")
-    for n in range(5):
+    for n in range(ITERATIONS_WAITING_FOR_BLOCKING_QUESTION):
         logging.info('interation: {}'.format(n))
         vm_obj_refresh = get_obj(content, vm_type, vm_obj.name)
         logging.info('vm_obj_refresh: {}'.format(vm_obj_refresh))
@@ -155,8 +159,13 @@ def main():
         try:
             update_virtual_cd_backend_by_obj(si, vm_obj, args.unitnumber,
                                              content, [vim.VirtualMachine], args.iso)
+        except vim.fault.GenericVmConfigFault as e:
+            logging.error('update_virtual_cd_backend_by_obj Exception: {}'.format(e))
         except Exception as e:
             logging.error('update_virtual_cd_backend_by_obj Exception: {}'.format(e))
+            sys.stderr.write('update_virtual_cd_backend_by_obj Exception: {}\n'.format(e))
+            sys.exit(6)
+
         device_change = args.iso if args.iso else 'Client Device'
         print 'VM CD/DVD {} successfully' \
               ' state changed to {}'.format(args.unitnumber, device_change)

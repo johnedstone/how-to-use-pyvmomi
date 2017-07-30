@@ -59,9 +59,7 @@ def manage_cdrom(obj):
 
     logger.debug('Command: {}'.format(cmd))
     p1 = subprocess.Popen(shlex.split(cmd),
-             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-             env={'a': 'b'})
-             # env={'ITERATIONS_WAITING_FOR_BLOCKING_QUESTION': settings.ITERATIONS_WAITING_FOR_BLOCKING_QUESTION})
+             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     my_timer = Timer(settings.PVMOMI_TIMEOUT, kill, [p1])
 
     try:
