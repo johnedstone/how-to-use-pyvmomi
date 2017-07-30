@@ -13,6 +13,7 @@
 # Updated Jul-2017 by E Johnstone, https://github.com/johnedstone, to deal with unmounting
 
 import atexit
+import os
 import requests
 import ssl
 import sys
