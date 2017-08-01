@@ -50,8 +50,7 @@ else:
     ssl._create_default_https_context = _create_unverified_https_context
 
 def update_virtual_cd_backend_by_obj(si, vm_obj, cdrom_number,
-                                     content, vm_type,
-                                     full_path_to_iso=None):
+                                     content, full_path_to_iso=None):
     """ Updates Virtual Machine CD/DVD backend device
     :param vm_obj: virtual machine object vim.VirtualMachine
     :param cdrom_number: CD/DVD drive unit number
@@ -100,13 +99,13 @@ def update_virtual_cd_backend_by_obj(si, vm_obj, cdrom_number,
 
     # Look for blocking question
     # Ref: http://www.lucd.info/2015/10/02/answer-the-question/
-    # This loop is in place of vm_obj.UpdateViewData('runtime.question') which is in PowerCLI
-    #     but I can't find in pyvmomi
+    # Implemented CreateListView which can be use to watch
+    # for updates.  Someday refactor this loop to watch for updates.
 
     logging.info("Checking for the Guest Control Question")
     for n in range(ITERATIONS_WAITING_FOR_BLOCKING_QUESTION):
         logging.info('interation: {}'.format(n))
-        vm_obj_refresh = get_obj(content, vm_type, vm_obj.name)
+        vm_obj_refresh = get_obj_by_moref(content, vm_obj)
         logging.info('vm_obj_refresh: {}'.format(vm_obj_refresh))
         if vm_obj_refresh:
             question = vm_obj_refresh.runtime.question
@@ -141,6 +140,17 @@ def get_args():
     my_args = parser.parse_args()
     return cli.prompt_for_password(my_args)
 
+def get_obj_by_moref(content, obj):
+    obj_from_list_view = None
+    list_ = content.viewManager.CreateListView([obj])
+    for ea in list_.view:
+        if ea.name == obj.name:
+            obj_from_list_view = ea 
+            break
+
+    logging.info('Object from_list_view: {}'.format(obj_from_list_view))
+
+    return obj_from_list_view
 
 def get_obj(content, vim_type, name):
     obj = None
@@ -172,7 +182,7 @@ def main():
     if vm_obj:
         try:
             update_virtual_cd_backend_by_obj(si, vm_obj, args.unitnumber,
-                                             content, [vim.VirtualMachine], args.iso)
+                                             content, args.iso)
         except vim.fault.GenericVmConfigFault as e:
             logging.error('update_virtual_cd_backend_by_obj Exception: {}'.format(e))
         except Exception as e:

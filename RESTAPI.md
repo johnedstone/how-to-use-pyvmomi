@@ -11,7 +11,7 @@ Once this REST API is implemented in Openshift, the following examples show moun
 umounting an ISO in the CDROM.
 
 * Note: Larger vCenters have longer response times.  In this case, increase the parameters PVMOMI_TIMEOUT
-and/or ITERATIONS_WAITING_FOR_BLOCKING_QUESTION.  The defaults are 240 sec and 3 iterations. This timeout
+and/or ITERATIONS_WAITING_FOR_BLOCKING_QUESTION.  The defaults are 240 sec and 15 iterations. This timeout
 is the time allowed before killing the internal call to vSphere. The iterations are looking for the
 blocking question, that appears in the UI, waiting to answer 'yes'.
 
